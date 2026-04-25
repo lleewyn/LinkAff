@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tạo Link Shopee - ghiensansale.shopee.cc</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="main-wrapper">
+        <header class="page-header">
+            <div class="logo-wrapper">
+                <i class="fa-solid fa-link logo-icon"></i>
+                <h1>Tạo Link Shopee</h1>
+            </div>
+            <div class="badge">ghiensansale.shopee.cc</div>
+        </header>
+
+        <main class="content-container">
+            <div class="generator-card">
+                <div class="card-title">
+                    <i class="fa-solid fa-lock"></i>
+                    <span>Link sản phẩm Shopee</span>
+                </div>
+                
+                <div class="input-container">
+                    <input type="text" id="product-url" placeholder="Dán link Shopee vào đây...">
+                    <button id="paste-btn" class="inner-icon-btn">
+                        <i class="fa-regular fa-copy"></i>
+                    </button>
+                </div>
+
+                <button id="convert-btn" class="submit-btn">
+                    <i class="fa-solid fa-pencil"></i>
+                    Tạo Link Ngay
+                </button>
+
+                <!-- Hidden Result Area (Matches Sample behavior if needed) -->
+                <div id="result-area" class="result-area hidden">
+                    <div class="card-title">Link Affiliate của bạn:</div>
+                    <div class="input-container">
+                        <input type="text" id="output-url" readonly>
+                        <button id="copy-btn" class="inner-icon-btn">
+                            <i class="fa-solid fa-copy"></i>
+                        </button>
+                    </div>
+                    <div id="toast" class="toast hidden">Đã sao chép!</div>
+                </div>
+
+                <section class="instructions-section">
+                    <div class="section-header">
+                        <i class="fa-solid fa-circle-info info-icon"></i>
+                        <h3>Hướng dẫn</h3>
+                    </div>
+                    <ol class="steps-list">
+                        <li>Sau khi tạo link, nhấn <strong>Copy Link</strong>.</li>
+                        <li>Dán link dưới bình luận bài đăng này.</li>
+                        <li>Click vào link để mở Shopee sẽ nhận được mã.</li>
+                    </ol>
+                    <a href="#" id="fb-post-link" class="fb-post-btn">
+                        <i class="fa-brands fa-facebook"></i>
+                        Đến bài đăng Facebook
+                    </a>
+                </section>
+
+                <section class="promo-banner">
+                    <div class="banner-content">
+                        <div class="promo-image-wrapper">
+                            <img src="promo_banner.png" alt="Promo Image" class="promo-img">
+                        </div>
+                        <div class="promo-details">
+                            <div class="promo-title">Giảm 25% Giảm tối đa 1trđ</div>
+                            <div class="promo-subtitle">Đơn Tối Thiểu 50kđ</div>
+                            <div class="promo-badge">Độc Quyền Facebook</div>
+                            <div class="promo-stat">Đã dùng 98%, Sắp hết hạn: Còn ... <span class="terms">Điều Kiện</span></div>
+                        </div>
+                        <button class="use-now-btn">Dùng Ngay</button>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Sidebar Icons -->
+        <aside class="social-sidebar">
+            <div class="sidebar-stat">33.9k <span>Chia sẻ</span></div>
+            <a href="#" class="social-btn facebook"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="#" class="social-btn x-com"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="#" class="social-btn email"><i class="fa-solid fa-envelope"></i></a>
+            <a href="#" class="social-btn messenger"><i class="fa-brands fa-facebook-messenger"></i></a>
+            <a href="#" class="social-btn share"><i class="fa-solid fa-share-nodes"></i></a>
+        </aside>
+    </div>
+
+    <!-- Admin Settings Toggle -->
+    <button id="admin-toggle" class="admin-gear">
+        <i class="fa-solid fa-gear"></i>
+    </button>
+
+    <!-- Admin Modal -->
+    <div id="admin-modal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h2>Bảng Quản Trị (Admin Panel)</h2>
+                <button id="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="admin-input-group">
+                    <label>Mã Affiliate của bạn:</label>
+                    <input type="text" id="admin-aff-id" placeholder="17371550373">
+                </div>
+                <div class="admin-input-group">
+                    <label>Link Ảnh Banner (URL):</label>
+                    <input type="text" id="admin-banner-url" placeholder="Paste image link here...">
+                </div>
+                <div class="admin-input-group">
+                    <label>Link Bài Đăng Facebook:</label>
+                    <input type="text" id="admin-fb-link" placeholder="https://facebook.com/...">
+                </div>
+                <button id="save-settings" class="save-btn">Lưu Cài Đặt</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
