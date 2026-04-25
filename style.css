@@ -153,7 +153,9 @@ input[type="text"]:focus {
     gap: 10px;
 }
 
-.hidden { display: none; }
+.hidden {
+    display: none;
+}
 
 /* Instructions Section */
 .instructions-section {
@@ -171,7 +173,9 @@ input[type="text"]:focus {
     color: #2196F3;
 }
 
-.info-icon { font-size: 18px; }
+.info-icon {
+    font-size: 18px;
+}
 
 .section-header h3 {
     font-size: 15px;
@@ -236,14 +240,16 @@ input[type="text"]:focus {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    image-rendering: -webkit-optimize-contrast; /* Giúp ảnh sắc nét hơn khi resize */
+    image-rendering: -webkit-optimize-contrast;
+    /* Giúp ảnh sắc nét hơn khi resize */
 }
 
 /* Admin Panel Styles */
 .admin-gear {
     position: fixed;
     bottom: 20px;
-    right: 70px; /* Offset from social sidebar if needed, or close to it */
+    right: 70px;
+    /* Offset from social sidebar if needed, or close to it */
     width: 45px;
     height: 45px;
     background: #333;
@@ -251,12 +257,15 @@ input[type="text"]:focus {
     border: none;
     border-radius: 50%;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     z-index: 1000;
     transition: transform 0.3s;
 }
 
-.admin-gear:hover { transform: rotate(90deg); background: var(--shopee-orange); }
+.admin-gear:hover {
+    transform: rotate(90deg);
+    background: var(--shopee-orange);
+}
 
 .modal-overlay {
     position: fixed;
@@ -264,7 +273,7 @@ input[type="text"]:focus {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.6);
+    background: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(4px);
     display: flex;
     justify-content: center;
@@ -280,7 +289,7 @@ input[type="text"]:focus {
     max-height: 90vh;
     border-radius: 12px;
     overflow-y: auto;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
 }
 
 .modal-header {
@@ -292,14 +301,17 @@ input[type="text"]:focus {
     border-bottom: 1px solid #eee;
 }
 
-.modal-header h2 { font-size: 18px; color: #333; }
-#close-modal { background: none; border: none; font-size: 24px; cursor: pointer; color: #999; }
+.modal-header h2 {
+    font-size: 18px;
+    color: #333;
+}
 
-.modal-body { 
-    padding: 20px; 
-    display: flex; 
-    flex-direction: column; 
-    gap: 10px; 
+#close-modal {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #999;
 }
 
 .admin-group-title {
@@ -356,8 +368,13 @@ input[type="text"]:focus {
     border: 1px solid #ddd;
 }
 
-.file-label:hover { background: #e5e5e5; }
-#admin-banner-file { display: none; }
+.file-label:hover {
+    background: #e5e5e5;
+}
+
+#admin-banner-file {
+    display: none;
+}
 
 /* Cropper Styles */
 #cropper-wrapper {
@@ -389,6 +406,7 @@ input[type="text"]:focus {
     margin: 5px auto !important;
     display: inline-block !important;
 }
+
 .save-btn {
     background: #10b981;
     color: white;
@@ -404,14 +422,23 @@ input[type="text"]:focus {
     display: block;
 }
 
-.save-btn:hover { background: #059669; }
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+.save-btn:hover {
+    background: #059669;
 }
 
-.hidden { display: none !important; }
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.hidden {
+    display: none !important;
+}
 
 .promo-details {
     flex: 1;
@@ -478,7 +505,7 @@ input[type="text"]:focus {
     font-weight: 700;
     line-height: 1.2;
     border-radius: 4px 4px 0 0;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar-stat span {
@@ -504,11 +531,26 @@ input[type="text"]:focus {
     filter: brightness(1.1);
 }
 
-.facebook { background: #1877F2; }
-.x-com { background: #000000; }
-.email { background: #888888; }
-.messenger { background: #0084FF; }
-.share { background: #8BC34A; border-radius: 0 0 4px 4px; }
+.facebook {
+    background: #1877F2;
+}
+
+.x-com {
+    background: #000000;
+}
+
+.email {
+    background: #888888;
+}
+
+.messenger {
+    background: #0084FF;
+}
+
+.share {
+    background: #8BC34A;
+    border-radius: 0 0 4px 4px;
+}
 
 /* Toast */
 .toast {

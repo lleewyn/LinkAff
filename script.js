@@ -11,6 +11,11 @@ document.addEventListener('DOMContentLoaded', () => {
         bannerSize: '60'
     };
 
+    // --- CẤU HÌNH SUPABASE ---
+    const SUPABASE_URL = 'https://pmdgvhldkzmxzppnlpwy.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_BN8RfFQ4db0vLQ4vQYkplg_EarI2E4k';
+    const supabase = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
     // --- CÁC PHẦN TỬ UI CHÍNH ---
     const productUrlInput = document.getElementById('product-url');
     const convertBtn = document.getElementById('convert-btn');
@@ -61,6 +66,36 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- KHỞI TẠO ---
     let currentConfig = loadConfig();
     applyConfig(currentConfig);
+
+    // Tải cấu hình từ Supabase (nếu có)
+    async function initSupabase() {
+        if (!supabase) return;
+        try {
+            const { data, error } = await supabase
+                .from('app_config')
+                .select('*')
+                .eq('id', 1)
+                .single();
+            
+            if (data) {
+                // Chuyển đổi tên cột từ snake_case sang camelCase (nếu cần)
+                currentConfig = {
+                    affId: data.aff_id,
+                    bannerUrl: data.banner_url,
+                    bannerSize: data.banner_size,
+                    fbLink: data.fb_link,
+                    promoTitle: data.promo_title,
+                    promoSubtitle: data.promo_subtitle,
+                    promoBadge: data.promo_badge,
+                    promoStat: data.promo_stat
+                };
+                applyConfig(currentConfig);
+            }
+        } catch (err) {
+            console.warn('Sử dụng cấu hình local:', err);
+        }
+    }
+    initSupabase();
 
     // --- LOGIC CHÍNH ---
 
@@ -190,7 +225,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Lưu cài đặt Admin
-    saveSettingsBtn.addEventListener('click', () => {
+    saveSettingsBtn.addEventListener('click', async () => {
         const newConfig = {
             affId: adminAffIdInput.value.trim() || DEFAULTS.affId,
             bannerUrl: adminBannerUrlInput.value.trim() || DEFAULTS.bannerUrl,
@@ -202,12 +237,37 @@ document.addEventListener('DOMContentLoaded', () => {
             promoStat: adminPromoStatInput.value.trim() || DEFAULTS.promoStat
         };
 
+        // 1. Lưu vào LocalStorage (dự phòng)
         saveConfig(newConfig);
+        
+        // 2. Lưu lên Supabase
+        if (supabase) {
+            showToast('Đang đồng bộ với Cloud...');
+            const { error } = await supabase
+                .from('app_config')
+                .update({
+                    aff_id: newConfig.affId,
+                    banner_url: newConfig.bannerUrl,
+                    banner_size: newConfig.bannerSize,
+                    fb_link: newConfig.fbLink,
+                    promo_title: newConfig.promoTitle,
+                    promo_subtitle: newConfig.promoSubtitle,
+                    promo_badge: newConfig.promoBadge,
+                    promo_stat: newConfig.promoStat
+                })
+                .eq('id', 1);
+
+            if (error) {
+                console.error('Lỗi Supabase:', error);
+                alert('Không thể lưu lên Cloud, vui lòng kiểm tra bảng app_config!');
+            }
+        }
+
         currentConfig = newConfig;
         applyConfig(newConfig);
         
         adminModal.classList.add('hidden');
-        showToast('Đã cập nhật cài đặt thành công!');
+        showToast('Đã cập nhật cấu hình cho toàn hệ thống!');
     });
 
     // Đóng modal khi click ra ngoài
