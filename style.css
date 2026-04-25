@@ -380,7 +380,7 @@ input[type="text"]:focus {
     font-weight: 700 !important;
     margin: 5px auto !important;
     display: inline-block !important;
-}
+.save-btn {
     background: #10b981;
     color: white;
     border: none;
@@ -389,6 +389,7 @@ input[type="text"]:focus {
     font-weight: 700;
     cursor: pointer;
     margin-top: 10px;
+    width: 100%;
 }
 
 .save-btn:hover { background: #059669; }
