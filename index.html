@@ -103,14 +103,29 @@
     <div id="admin-modal" class="modal-overlay hidden">
         <div class="modal-card">
             <div class="modal-header">
-                <h2>Bảng Quản Trị (Admin Panel)</h2>
+                <h2 id="modal-title">Đăng Nhập Quản Trị</h2>
                 <button id="close-modal">&times;</button>
             </div>
             <div class="modal-body">
-                <div class="admin-input-group">
-                    <label>Mã Affiliate của bạn:</label>
-                    <input type="text" id="admin-aff-id" placeholder="17371550373">
+                <!-- Login Section -->
+                <div id="login-section" class="admin-section">
+                    <div class="admin-input-group">
+                        <label>Tài khoản:</label>
+                        <input type="text" id="login-username" placeholder="Nhập tài khoản...">
+                    </div>
+                    <div class="admin-input-group">
+                        <label>Mật khẩu:</label>
+                        <input type="password" id="login-password" placeholder="Nhập mật khẩu...">
+                    </div>
+                    <button id="login-btn" class="save-btn">Đăng Nhập</button>
                 </div>
+
+                <!-- Settings Section (Initially Hidden) -->
+                <div id="settings-section" class="admin-section hidden">
+                    <div class="admin-input-group">
+                        <label>Mã Affiliate của bạn:</label>
+                        <input type="text" id="admin-aff-id" placeholder="17371550373">
+                    </div>
                 <div class="admin-input-group">
                     <label>Link Ảnh Banner (URL):</label>
                     <input type="text" id="admin-banner-url" placeholder="Paste image link here...">
@@ -136,6 +151,7 @@
                     <input type="text" id="admin-promo-stat" placeholder="Đã dùng 98%, Sắp hết hạn: Còn ...">
                 </div>
                 <button id="save-settings" class="save-btn">Lưu Cài Đặt</button>
+                </div>
             </div>
         </div>
     </div>

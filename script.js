@@ -35,6 +35,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const adminPromoBadgeInput = document.getElementById('admin-promo-badge');
     const adminPromoStatInput = document.getElementById('admin-promo-stat');
 
+    const loginSection = document.getElementById('login-section');
+    const settingsSection = document.getElementById('settings-section');
+    const loginBtn = document.getElementById('login-btn');
+    const loginUser = document.getElementById('login-username');
+    const loginPass = document.getElementById('login-password');
+    const modalTitle = document.getElementById('modal-title');
+
+    const ADMIN_CREDS = {
+        user: 'quynhbikhung',
+        pass: 'mkquynh123bijkhung'
+    };
+
+    let isLoggedIn = false;
+
     // --- KHỞI TẠO ---
     let currentConfig = loadConfig();
     applyConfig(currentConfig);
@@ -80,6 +94,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Mở Admin Modal
     adminToggle.addEventListener('click', () => {
+        // Reset về màn hình login nếu chưa đăng nhập
+        if (!isLoggedIn) {
+            loginSection.classList.remove('hidden');
+            settingsSection.classList.add('hidden');
+            modalTitle.textContent = 'Đăng Nhập Quản Trị';
+            loginUser.value = '';
+            loginPass.value = '';
+        } else {
+            showSettings();
+        }
+        
+        adminModal.classList.remove('hidden');
+    });
+
+    // Xử lý Đăng nhập
+    loginBtn.addEventListener('click', () => {
+        if (loginUser.value === ADMIN_CREDS.user && loginPass.value === ADMIN_CREDS.pass) {
+            isLoggedIn = true;
+            showSettings();
+            showToast('Đăng nhập thành công!');
+        } else {
+            alert('Sai tài khoản hoặc mật khẩu!');
+        }
+    });
+
+    function showSettings() {
+        loginSection.classList.add('hidden');
+        settingsSection.classList.remove('hidden');
+        modalTitle.textContent = 'Bảng Quản Trị (Admin Panel)';
+
         // Điền lại giá trị hiện tại vào form
         adminAffIdInput.value = currentConfig.affId;
         adminBannerUrlInput.value = currentConfig.bannerUrl;
@@ -88,9 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
         adminPromoSubtitleInput.value = currentConfig.promoSubtitle;
         adminPromoBadgeInput.value = currentConfig.promoBadge;
         adminPromoStatInput.value = currentConfig.promoStat;
-        
-        adminModal.classList.remove('hidden');
-    });
+    }
 
     // Đóng Admin Modal
     closeModal.addEventListener('click', () => {
