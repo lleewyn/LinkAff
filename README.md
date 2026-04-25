@@ -3,47 +3,43 @@
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/import?repository-url=https://github.com/lleewyn/LinkAff)
 [![GitHub license](https://img.shields.io/github/license/lleewyn/LinkAff)](https://github.com/lleewyn/LinkAff/blob/main/LICENSE)
 
-**LinkAff** là một công cụ web đơn giản, tinh tế giúp tạo nhanh đường dẫn Affiliate Shopee từ các link sản phẩm thông thường. Dự án được thiết kế với giao diện hiện đại, tối ưu trải nghiệm người dùng trên cả điện thoại và máy tính.
+**LinkAff** là một công cụ web mạnh mẽ, tinh tế giúp tạo nhanh đường dẫn Affiliate Shopee từ các link sản phẩm thông thường. Dự án tích hợp cơ sở dữ liệu đám mây giúp bạn quản lý cấu hình tập trung cho toàn bộ người dùng.
 
 ---
 
 ## ✨ Tính năng nổi bật
 
 - 🚀 **Chuyển đổi tức thì:** Chuyển đổi link Shopee sang link Affiliate chỉ với 1 cú click.
-- 📋 **Hỗ trợ dán nhanh:** Nút "Paste" thông minh giúp lấy link từ clipboard nhanh chóng.
-- 📱 **Giao diện Responsive:** Hiển thị hoàn hảo trên Mobile, Tablet và Desktop theo phong cách Shopee.
-- ⚙️ **Bảng quản trị (Admin Panel):** Tích hợp sẵn công cụ cấu hình ngay trên giao diện web:
-  - Thay đổi **Affiliate ID**.
-  - Thay đổi **Ảnh Banner** khuyến mãi.
-  - Thay đổi **Link bài đăng Facebook**.
-- 🌓 **Thiết kế hiện đại:** Sử dụng Gradient, Shadow mịn và icon từ FontAwesome 6.
+- 📋 **Hỗ trợ dán nhanh:** Nút "Paste" thông minh giúp lấy link từ clipboard.
+- 📱 **Giao diện Responsive:** Hiển thị hoàn hảo trên mọi thiết bị.
+- ⚙️ **Bảng quản trị (Admin Panel) Bảo mật:** 
+  - Đăng nhập an toàn để thay đổi cấu hình.
+  - Thay đổi **Affiliate ID**, **Link Facebook**.
+  - Tùy chỉnh **Voucher & Banner** (Tiêu đề, mô tả, badge, stats).
+- ✂️ **Cắt ảnh thông minh:** Tích hợp bộ công cụ cắt ảnh chuyên nghiệp cho Banner.
+- ☁️ **Đồng bộ Đám mây (Supabase):** Tự động đồng bộ mọi thay đổi lên Cloud để tất cả người dùng đều thấy nội dung mới nhất.
 
 ---
 
 ## 🛠 Công nghệ sử dụng
 
-- **Frontend:** Vanilla HTML5, CSS3 (Flexbox/Grid), JavaScript (ES6+).
-- **Icons:** FontAwesome 6.
-- **Fonts:** Google Fonts (Roboto).
-- **Storage:** LocalStorage (dùng để lưu cấu hình Admin trên trình duyệt).
+- **Frontend:** Vanilla HTML5, CSS3, JavaScript (ES6+).
+- **Backend/DB:** Supabase (Cloud Database).
+- **Libraries:** Cropper.js (Cắt ảnh), FontAwesome 6, Google Fonts.
 
 ---
 
 ## 🚀 Hướng dẫn triển khai (Deployment)
 
-Dự án là trang web tĩnh, bạn có thể chạy ngay mà không cần server.
-
-### 1. Chạy dưới máy cục bộ
-Chỉ cần mở file `index.html` bằng trình duyệt bất kỳ.
-
-### 2. Triển khai lên Vercel (Khuyên dùng)
+### 1. Triển khai lên Vercel (Khuyên dùng)
 - Đẩy code lên GitHub.
 - Truy cập [Vercel.com](https://vercel.com) và Import repository này.
-- Mọi thứ sẽ tự động được cấu hình và online trong 30 giây.
+- Mọi thứ sẽ online ngay lập tức.
 
-### 3. GitHub Pages
-- Vào **Settings** > **Pages**.
-- Chọn nhánh `main` và nhấn **Save**.
+### 2. Cấu hình Supabase
+- Tạo project trên [Supabase](https://supabase.com).
+- Tạo bảng `app_config` (Xem mã SQL trong file đính kèm hoặc tài liệu hướng dẫn).
+- Thay đổi `SUPABASE_URL` và `SUPABASE_KEY` trong `script.js`.
 
 ---
 
@@ -51,13 +47,10 @@ Chỉ cần mở file `index.html` bằng trình duyệt bất kỳ.
 
 Để vào bảng quản trị:
 1. Nhấn vào biểu tượng **Răng cưa (Gear)** ở góc dưới bên phải màn hình.
-2. Nhập các thông số cấu hình:
-   - **Affiliate ID:** Mã tiếp thị liên kết của bạn.
-   - **Link Ảnh Banner:** URL hình ảnh bạn muốn hiển thị ở mục khuyến mãi.
-   - **Link FB:** Đường dẫn đến bài đăng Facebook của bạn.
-3. Nhấn **Lưu Cài Đặt**.
-
-> **Lưu ý:** Cấu hình này được lưu vào `localStorage` của trình duyệt. Nếu bạn muốn thay đổi mặc định cho tất cả người dùng, hãy chỉnh sửa biến `DEFAULTS` trong file `script.js`.
+2. Đăng nhập với tài khoản:
+   - **User:** `quynhbikhung`
+   - **Pass:** `mkquynh123bijkhung`
+3. Chỉnh sửa các thông số và nhấn **Lưu Cấu Hình**.
 
 ---
 
