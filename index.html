@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
 </head>
 <body>
     <div class="main-wrapper">
@@ -122,50 +123,64 @@
 
                 <!-- Settings Section (Initially Hidden) -->
                 <div id="settings-section" class="admin-section hidden">
+                    <div class="admin-group-title">Cấu hình chung</div>
                     <div class="admin-input-group">
                         <label>Mã Affiliate của bạn:</label>
                         <input type="text" id="admin-aff-id" placeholder="17371550373">
                     </div>
                     <div class="admin-input-group">
-                        <label>Link Ảnh Banner (URL hoặc Tải lên):</label>
-                        <input type="text" id="admin-banner-url" placeholder="Paste image link here...">
+                        <label>Link Bài Đăng Facebook:</label>
+                        <input type="text" id="admin-fb-link" placeholder="https://facebook.com/...">
+                    </div>
+
+                    <div class="admin-group-title">Cấu hình Voucher & Banner</div>
+                    <div class="admin-input-group">
+                        <label>Ảnh Banner (Tải lên & Cắt):</label>
                         <div class="file-input-wrapper">
                             <label for="admin-banner-file" class="file-label">
-                                <i class="fa-solid fa-upload"></i> Tải ảnh lên
+                                <i class="fa-solid fa-upload"></i> Chọn ảnh mới
                             </label>
                             <input type="file" id="admin-banner-file" accept="image/*">
                         </div>
+                        <input type="hidden" id="admin-banner-url">
+                        
+                        <!-- Cropper Area -->
+                        <div id="cropper-wrapper" class="hidden">
+                            <div class="cropper-container">
+                                <img id="cropper-image" src="">
+                            </div>
+                            <button id="crop-btn" class="inner-icon-btn action-btn">Cắt & Dùng</button>
+                        </div>
                     </div>
+
                     <div class="admin-input-group">
                         <label>Kích thước ảnh banner (px):</label>
                         <input type="number" id="admin-banner-size" placeholder="60">
                     </div>
-                <div class="admin-input-group">
-                    <label>Link Bài Đăng Facebook:</label>
-                    <input type="text" id="admin-fb-link" placeholder="https://facebook.com/...">
-                </div>
-                <div class="admin-input-group">
-                    <label>Tiêu đề Voucher:</label>
-                    <input type="text" id="admin-promo-title" placeholder="Giảm 25% Giảm tối đa 1trđ">
-                </div>
-                <div class="admin-input-group">
-                    <label>Mô tả Voucher:</label>
-                    <input type="text" id="admin-promo-subtitle" placeholder="Đơn Tối Thiểu 50kđ">
-                </div>
-                <div class="admin-input-group">
-                    <label>Nhãn Voucher (Badge):</label>
-                    <input type="text" id="admin-promo-badge" placeholder="Độc Quyền Facebook">
-                </div>
-                <div class="admin-input-group">
-                    <label>Trạng thái Voucher (Stats):</label>
-                    <input type="text" id="admin-promo-stat" placeholder="Đã dùng 98%, Sắp hết hạn: Còn ...">
-                </div>
-                <button id="save-settings" class="save-btn">Lưu Cài Đặt</button>
+
+                    <div class="admin-input-group">
+                        <label>Tiêu đề Voucher:</label>
+                        <input type="text" id="admin-promo-title" placeholder="Giảm 25% Giảm tối đa 1trđ">
+                    </div>
+                    <div class="admin-input-group">
+                        <label>Mô tả Voucher:</label>
+                        <input type="text" id="admin-promo-subtitle" placeholder="Đơn Tối Thiểu 50kđ">
+                    </div>
+                    <div class="admin-input-group">
+                        <label>Nhãn Voucher (Badge):</label>
+                        <input type="text" id="admin-promo-badge" placeholder="Độc Quyền Facebook">
+                    </div>
+                    <div class="admin-input-group">
+                        <label>Trạng thái Voucher (Stats):</label>
+                        <input type="text" id="admin-promo-stat" placeholder="Đã dùng 98%, Sắp hết hạn: Còn ...">
+                    </div>
+                    <button id="save-settings" class="save-btn">Lưu Cấu Hình</button>
                 </div>
             </div>
         </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

@@ -32,6 +32,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const adminBannerUrlInput = document.getElementById('admin-banner-url');
     const adminBannerFileInput = document.getElementById('admin-banner-file');
     const adminBannerSizeInput = document.getElementById('admin-banner-size');
+    
+    const cropperWrapper = document.getElementById('cropper-wrapper');
+    const cropperImage = document.getElementById('cropper-image');
+    const cropBtn = document.getElementById('crop-btn');
+    let cropper = null;
+
     const adminFbLinkInput = document.getElementById('admin-fb-link');
     const adminPromoTitleInput = document.getElementById('admin-promo-title');
     const adminPromoSubtitleInput = document.getElementById('admin-promo-subtitle');
@@ -138,15 +144,43 @@ document.addEventListener('DOMContentLoaded', () => {
         adminPromoStatInput.value = currentConfig.promoStat;
     }
 
-    // Xử lý upload file ảnh
+    // Xử lý upload file ảnh & Khởi tạo Cropper
     adminBannerFileInput.addEventListener('change', (e) => {
         const file = e.target.files[0];
         if (file) {
             const reader = new FileReader();
             reader.onload = (event) => {
-                adminBannerUrlInput.value = event.target.result; // Chuyển thành Base64
+                // Hiển thị khung cắt ảnh
+                cropperImage.src = event.target.result;
+                cropperWrapper.classList.remove('hidden');
+                
+                if (cropper) cropper.destroy();
+                
+                // Khởi tạo Cropper sau khi ảnh load
+                setTimeout(() => {
+                    cropper = new Cropper(cropperImage, {
+                        aspectRatio: 1, // Tỷ lệ 1:1 cho voucher
+                        viewMode: 1,
+                        autoCropArea: 1,
+                    });
+                }, 100);
             };
             reader.readAsDataURL(file);
+        }
+    });
+
+    // Nút xác nhận cắt ảnh
+    cropBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (cropper) {
+            const canvas = cropper.getCroppedCanvas({
+                width: 300,
+                height: 300,
+            });
+            const base64 = canvas.toDataURL('image/png');
+            adminBannerUrlInput.value = base64; // Lưu kết quả cắt
+            cropperWrapper.classList.add('hidden');
+            showToast('Đã cắt ảnh thành công!');
         }
     });
 
