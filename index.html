@@ -17,7 +17,6 @@
                 <i class="fa-solid fa-link logo-icon"></i>
                 <h1>Tạo Link Shopee</h1>
             </div>
-            <div class="badge">ghiensansale.shopee.cc</div>
         </header>
 
         <main class="content-container">
@@ -73,10 +72,10 @@
                             <img src="promo_banner.png" alt="Promo Image" class="promo-img">
                         </div>
                         <div class="promo-details">
-                            <div class="promo-title">Giảm 25% Giảm tối đa 1trđ</div>
-                            <div class="promo-subtitle">Đơn Tối Thiểu 50kđ</div>
-                            <div class="promo-badge">Độc Quyền Facebook</div>
-                            <div class="promo-stat">Đã dùng 98%, Sắp hết hạn: Còn ... <span class="terms">Điều Kiện</span></div>
+                            <div class="promo-title" id="promo-title">Giảm 25% Giảm tối đa 1trđ</div>
+                            <div class="promo-subtitle" id="promo-subtitle">Đơn Tối Thiểu 50kđ</div>
+                            <div class="promo-badge" id="promo-badge">Độc Quyền Facebook</div>
+                            <div class="promo-stat" id="promo-stat">Đã dùng 98%, Sắp hết hạn: Còn ... <span class="terms">Điều Kiện</span></div>
                         </div>
                         <button class="use-now-btn">Dùng Ngay</button>
                     </div>
@@ -119,6 +118,22 @@
                 <div class="admin-input-group">
                     <label>Link Bài Đăng Facebook:</label>
                     <input type="text" id="admin-fb-link" placeholder="https://facebook.com/...">
+                </div>
+                <div class="admin-input-group">
+                    <label>Tiêu đề Voucher:</label>
+                    <input type="text" id="admin-promo-title" placeholder="Giảm 25% Giảm tối đa 1trđ">
+                </div>
+                <div class="admin-input-group">
+                    <label>Mô tả Voucher:</label>
+                    <input type="text" id="admin-promo-subtitle" placeholder="Đơn Tối Thiểu 50kđ">
+                </div>
+                <div class="admin-input-group">
+                    <label>Nhãn Voucher (Badge):</label>
+                    <input type="text" id="admin-promo-badge" placeholder="Độc Quyền Facebook">
+                </div>
+                <div class="admin-input-group">
+                    <label>Trạng thái Voucher (Stats):</label>
+                    <input type="text" id="admin-promo-stat" placeholder="Đã dùng 98%, Sắp hết hạn: Còn ...">
                 </div>
                 <button id="save-settings" class="save-btn">Lưu Cài Đặt</button>
             </div>

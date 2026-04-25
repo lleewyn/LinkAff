@@ -3,7 +3,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const DEFAULTS = {
         affId: '17371550373',
         bannerUrl: 'promo_banner.png',
-        fbLink: '#'
+        fbLink: '#',
+        promoTitle: 'Giảm 25% Giảm tối đa 1trđ',
+        promoSubtitle: 'Đơn Tối Thiểu 50kđ',
+        promoBadge: 'Độc Quyền Facebook',
+        promoStat: 'Đã dùng 98%, Sắp hết hạn: Còn ...'
     };
 
     // --- CÁC PHẦN TỬ UI CHÍNH ---
@@ -26,6 +30,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const adminAffIdInput = document.getElementById('admin-aff-id');
     const adminBannerUrlInput = document.getElementById('admin-banner-url');
     const adminFbLinkInput = document.getElementById('admin-fb-link');
+    const adminPromoTitleInput = document.getElementById('admin-promo-title');
+    const adminPromoSubtitleInput = document.getElementById('admin-promo-subtitle');
+    const adminPromoBadgeInput = document.getElementById('admin-promo-badge');
+    const adminPromoStatInput = document.getElementById('admin-promo-stat');
 
     // --- KHỞI TẠO ---
     let currentConfig = loadConfig();
@@ -76,6 +84,10 @@ document.addEventListener('DOMContentLoaded', () => {
         adminAffIdInput.value = currentConfig.affId;
         adminBannerUrlInput.value = currentConfig.bannerUrl;
         adminFbLinkInput.value = currentConfig.fbLink;
+        adminPromoTitleInput.value = currentConfig.promoTitle;
+        adminPromoSubtitleInput.value = currentConfig.promoSubtitle;
+        adminPromoBadgeInput.value = currentConfig.promoBadge;
+        adminPromoStatInput.value = currentConfig.promoStat;
         
         adminModal.classList.remove('hidden');
     });
@@ -90,7 +102,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const newConfig = {
             affId: adminAffIdInput.value.trim() || DEFAULTS.affId,
             bannerUrl: adminBannerUrlInput.value.trim() || DEFAULTS.bannerUrl,
-            fbLink: adminFbLinkInput.value.trim() || DEFAULTS.fbLink
+            fbLink: adminFbLinkInput.value.trim() || DEFAULTS.fbLink,
+            promoTitle: adminPromoTitleInput.value.trim() || DEFAULTS.promoTitle,
+            promoSubtitle: adminPromoSubtitleInput.value.trim() || DEFAULTS.promoSubtitle,
+            promoBadge: adminPromoBadgeInput.value.trim() || DEFAULTS.promoBadge,
+            promoStat: adminPromoStatInput.value.trim() || DEFAULTS.promoStat
         };
 
         saveConfig(newConfig);
@@ -130,6 +146,22 @@ document.addEventListener('DOMContentLoaded', () => {
         if (promoImg) promoImg.src = config.bannerUrl;
         // Cập nhật link FB
         if (fbPostLink) fbPostLink.href = config.fbLink;
+        
+        // Cập nhật thông tin voucher
+        const titleEl = document.getElementById('promo-title');
+        const subtitleEl = document.getElementById('promo-subtitle');
+        const badgeEl = document.getElementById('promo-badge');
+        const statEl = document.getElementById('promo-stat');
+
+        if (titleEl) titleEl.textContent = config.promoTitle;
+        if (subtitleEl) subtitleEl.textContent = config.promoSubtitle;
+        if (badgeEl) badgeEl.textContent = config.promoBadge;
+        if (statEl) {
+            // Giữ lại phần "Điều Kiện" nếu có
+            const termsSpan = statEl.querySelector('.terms');
+            statEl.textContent = config.promoStat + ' ';
+            if (termsSpan) statEl.appendChild(termsSpan);
+        }
     }
 
     function showToast(message) {
