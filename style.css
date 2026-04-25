@@ -295,6 +295,13 @@ input[type="text"]:focus {
 .modal-header h2 { font-size: 18px; color: #333; }
 #close-modal { background: none; border: none; font-size: 24px; cursor: pointer; color: #999; }
 
+.modal-body { 
+    padding: 20px; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 10px; 
+}
+
 .admin-group-title {
     font-size: 14px;
     font-weight: 700;
