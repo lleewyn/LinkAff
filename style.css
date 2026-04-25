@@ -325,6 +325,7 @@ input[type="text"]:focus {
     border-radius: 6px;
     font-size: 14px;
     transition: border-color 0.2s;
+    box-sizing: border-box;
 }
 
 .admin-input-group input:focus {
@@ -385,12 +386,15 @@ input[type="text"]:focus {
     background: #10b981;
     color: white;
     border: none;
-    padding: 12px;
+    padding: 14px;
     border-radius: 6px;
     font-weight: 700;
     cursor: pointer;
-    margin-top: 10px;
+    margin-top: 15px;
+    margin-bottom: 10px;
     width: 100%;
+    box-sizing: border-box;
+    display: block;
 }
 
 .save-btn:hover { background: #059669; }
