@@ -236,6 +236,7 @@ input[type="text"]:focus {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    image-rendering: -webkit-optimize-contrast; /* Giúp ảnh sắc nét hơn khi resize */
 }
 
 /* Admin Panel Styles */
@@ -295,21 +296,50 @@ input[type="text"]:focus {
 
 .modal-body { padding: 20px; display: flex; flex-direction: column; gap: 15px; }
 
+.admin-input-group {
+    margin-bottom: 20px;
+}
+
 .admin-input-group label {
     display: block;
     font-size: 13px;
     font-weight: 700;
-    margin-bottom: 6px;
-    color: #666;
+    margin-bottom: 8px;
+    color: #444;
 }
 
 .admin-input-group input {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
+    padding: 12px;
+    border: 1px solid #ccc;
     border-radius: 6px;
     font-size: 14px;
+    transition: border-color 0.2s;
 }
+
+.admin-input-group input:focus {
+    border-color: var(--shopee-orange);
+    outline: none;
+}
+
+.file-input-wrapper {
+    display: flex;
+    gap: 8px;
+    margin-top: 5px;
+}
+
+.file-label {
+    display: inline-block;
+    background: #f0f0f0;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+}
+
+.file-label:hover { background: #e5e5e5; }
+#admin-banner-file { display: none; }
 
 .save-btn {
     background: #10b981;

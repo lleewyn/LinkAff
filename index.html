@@ -126,10 +126,20 @@
                         <label>Mã Affiliate của bạn:</label>
                         <input type="text" id="admin-aff-id" placeholder="17371550373">
                     </div>
-                <div class="admin-input-group">
-                    <label>Link Ảnh Banner (URL):</label>
-                    <input type="text" id="admin-banner-url" placeholder="Paste image link here...">
-                </div>
+                    <div class="admin-input-group">
+                        <label>Link Ảnh Banner (URL hoặc Tải lên):</label>
+                        <input type="text" id="admin-banner-url" placeholder="Paste image link here...">
+                        <div class="file-input-wrapper">
+                            <label for="admin-banner-file" class="file-label">
+                                <i class="fa-solid fa-upload"></i> Tải ảnh lên
+                            </label>
+                            <input type="file" id="admin-banner-file" accept="image/*">
+                        </div>
+                    </div>
+                    <div class="admin-input-group">
+                        <label>Kích thước ảnh banner (px):</label>
+                        <input type="number" id="admin-banner-size" placeholder="60">
+                    </div>
                 <div class="admin-input-group">
                     <label>Link Bài Đăng Facebook:</label>
                     <input type="text" id="admin-fb-link" placeholder="https://facebook.com/...">

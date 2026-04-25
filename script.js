@@ -7,7 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
         promoTitle: 'Giảm 25% Giảm tối đa 1trđ',
         promoSubtitle: 'Đơn Tối Thiểu 50kđ',
         promoBadge: 'Độc Quyền Facebook',
-        promoStat: 'Đã dùng 98%, Sắp hết hạn: Còn ...'
+        promoStat: 'Đã dùng 98%, Sắp hết hạn: Còn ...',
+        bannerSize: '60'
     };
 
     // --- CÁC PHẦN TỬ UI CHÍNH ---
@@ -29,6 +30,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const adminAffIdInput = document.getElementById('admin-aff-id');
     const adminBannerUrlInput = document.getElementById('admin-banner-url');
+    const adminBannerFileInput = document.getElementById('admin-banner-file');
+    const adminBannerSizeInput = document.getElementById('admin-banner-size');
     const adminFbLinkInput = document.getElementById('admin-fb-link');
     const adminPromoTitleInput = document.getElementById('admin-promo-title');
     const adminPromoSubtitleInput = document.getElementById('admin-promo-subtitle');
@@ -127,12 +130,25 @@ document.addEventListener('DOMContentLoaded', () => {
         // Điền lại giá trị hiện tại vào form
         adminAffIdInput.value = currentConfig.affId;
         adminBannerUrlInput.value = currentConfig.bannerUrl;
+        adminBannerSizeInput.value = currentConfig.bannerSize || '60';
         adminFbLinkInput.value = currentConfig.fbLink;
         adminPromoTitleInput.value = currentConfig.promoTitle;
         adminPromoSubtitleInput.value = currentConfig.promoSubtitle;
         adminPromoBadgeInput.value = currentConfig.promoBadge;
         adminPromoStatInput.value = currentConfig.promoStat;
     }
+
+    // Xử lý upload file ảnh
+    adminBannerFileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                adminBannerUrlInput.value = event.target.result; // Chuyển thành Base64
+            };
+            reader.readAsDataURL(file);
+        }
+    });
 
     // Đóng Admin Modal
     closeModal.addEventListener('click', () => {
@@ -144,6 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const newConfig = {
             affId: adminAffIdInput.value.trim() || DEFAULTS.affId,
             bannerUrl: adminBannerUrlInput.value.trim() || DEFAULTS.bannerUrl,
+            bannerSize: adminBannerSizeInput.value.trim() || DEFAULTS.bannerSize,
             fbLink: adminFbLinkInput.value.trim() || DEFAULTS.fbLink,
             promoTitle: adminPromoTitleInput.value.trim() || DEFAULTS.promoTitle,
             promoSubtitle: adminPromoSubtitleInput.value.trim() || DEFAULTS.promoSubtitle,
@@ -185,7 +202,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function applyConfig(config) {
         // Cập nhật ảnh banner
-        if (promoImg) promoImg.src = config.bannerUrl;
+        if (promoImg) {
+            promoImg.src = config.bannerUrl;
+            // Cập nhật kích thước
+            const wrapper = document.querySelector('.promo-image-wrapper');
+            if (wrapper) {
+                const size = config.bannerSize || '60';
+                wrapper.style.width = size + 'px';
+                wrapper.style.height = size + 'px';
+            }
+        }
         // Cập nhật link FB
         if (fbPostLink) fbPostLink.href = config.fbLink;
         
