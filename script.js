@@ -8,7 +8,10 @@ document.addEventListener('DOMContentLoaded', () => {
         promoSubtitle: 'Đơn Tối Thiểu 50kđ',
         promoBadge: 'Độc Quyền Facebook',
         promoStat: 'Đã dùng 98%, Sắp hết hạn: Còn ...',
-        bannerSize: '60'
+        bannerSize: '60',
+        step1: 'Sau khi tạo link, nhấn Copy Link.',
+        step2: 'Dán link dưới bình luận bài đăng này.',
+        step3: 'Click vào link để mở Shopee sẽ nhận được mã.'
     };
 
     // --- CẤU HÌNH SUPABASE ---
@@ -48,6 +51,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const adminPromoSubtitleInput = document.getElementById('admin-promo-subtitle');
     const adminPromoBadgeInput = document.getElementById('admin-promo-badge');
     const adminPromoStatInput = document.getElementById('admin-promo-stat');
+    const adminStep1Input = document.getElementById('admin-step1');
+    const adminStep2Input = document.getElementById('admin-step2');
+    const adminStep3Input = document.getElementById('admin-step3');
 
     const loginSection = document.getElementById('login-section');
     const settingsSection = document.getElementById('settings-section');
@@ -87,7 +93,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     promoTitle: data.promo_title,
                     promoSubtitle: data.promo_subtitle,
                     promoBadge: data.promo_badge,
-                    promoStat: data.promo_stat
+                    promoStat: data.promo_stat,
+                    step1: data.step1 || DEFAULTS.step1,
+                    step2: data.step2 || DEFAULTS.step2,
+                    step3: data.step3 || DEFAULTS.step3
                 };
                 applyConfig(currentConfig);
             }
@@ -177,6 +186,9 @@ document.addEventListener('DOMContentLoaded', () => {
         adminPromoSubtitleInput.value = currentConfig.promoSubtitle;
         adminPromoBadgeInput.value = currentConfig.promoBadge;
         adminPromoStatInput.value = currentConfig.promoStat;
+        adminStep1Input.value = currentConfig.step1;
+        adminStep2Input.value = currentConfig.step2;
+        adminStep3Input.value = currentConfig.step3;
     }
 
     // Xử lý upload file ảnh & Khởi tạo Cropper
@@ -234,7 +246,10 @@ document.addEventListener('DOMContentLoaded', () => {
             promoTitle: adminPromoTitleInput.value.trim() || DEFAULTS.promoTitle,
             promoSubtitle: adminPromoSubtitleInput.value.trim() || DEFAULTS.promoSubtitle,
             promoBadge: adminPromoBadgeInput.value.trim() || DEFAULTS.promoBadge,
-            promoStat: adminPromoStatInput.value.trim() || DEFAULTS.promoStat
+            promoStat: adminPromoStatInput.value.trim() || DEFAULTS.promoStat,
+            step1: adminStep1Input.value.trim() || DEFAULTS.step1,
+            step2: adminStep2Input.value.trim() || DEFAULTS.step2,
+            step3: adminStep3Input.value.trim() || DEFAULTS.step3
         };
 
         // 1. Lưu vào LocalStorage (dự phòng)
@@ -253,7 +268,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     promo_title: newConfig.promoTitle,
                     promo_subtitle: newConfig.promoSubtitle,
                     promo_badge: newConfig.promoBadge,
-                    promo_stat: newConfig.promoStat
+                    promo_stat: newConfig.promoStat,
+                    step1: newConfig.step1,
+                    step2: newConfig.step2,
+                    step3: newConfig.step3
                 })
                 .eq('id', 1);
 

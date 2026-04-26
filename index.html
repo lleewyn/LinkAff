@@ -57,9 +57,9 @@
                         <h3>Hướng dẫn</h3>
                     </div>
                     <ol class="steps-list">
-                        <li>Sau khi tạo link, nhấn <strong>Copy Link</strong>.</li>
-                        <li>Dán link dưới bình luận bài đăng này.</li>
-                        <li>Click vào link để mở Shopee sẽ nhận được mã.</li>
+                        <li id="display-step1">Sau khi tạo link, nhấn <strong>Copy Link</strong>.</li>
+                        <li id="display-step2">Dán link dưới bình luận bài đăng này.</li>
+                        <li id="display-step3">Click vào link để mở Shopee sẽ nhận được mã.</li>
                     </ol>
                     <a href="#" id="fb-post-link" class="fb-post-btn">
                         <i class="fa-brands fa-facebook"></i>
@@ -123,7 +123,20 @@
 
                 <!-- Settings Section (Initially Hidden) -->
                 <div id="settings-section" class="admin-section hidden">
-                    <div class="admin-group-title">Cấu hình chung</div>
+                    <div class="admin-input-group">
+                        <label>Hướng dẫn bước 1:</label>
+                        <input type="text" id="admin-step1" placeholder="Nhập bước 1...">
+                    </div>
+                    <div class="admin-input-group">
+                        <label>Hướng dẫn bước 2:</label>
+                        <input type="text" id="admin-step2" placeholder="Nhập bước 2...">
+                    </div>
+                    <div class="admin-input-group">
+                        <label>Hướng dẫn bước 3:</label>
+                        <input type="text" id="admin-step3" placeholder="Nhập bước 3...">
+                    </div>
+
+                    <div class="admin-group-title">Cấu hình Voucher</div>
                     <div class="admin-input-group">
                         <label>Mã Affiliate của bạn:</label>
                         <input type="text" id="admin-aff-id" placeholder="17371550373">
