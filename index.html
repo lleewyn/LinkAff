@@ -13,10 +13,10 @@
 </head>
 <body>
     <div class="main-wrapper">
-        <header class="page-header">
-            <div class="logo-wrapper">
+        <header class="app-header">
+            <div class="logo">
                 <i class="fa-solid fa-link logo-icon"></i>
-                <h1>Tạo Link Shopee</h1>
+                <h1 id="display-app-title">Tạo Link Shopee</h1>
             </div>
         </header>
 
@@ -123,6 +123,10 @@
 
                 <!-- Settings Section (Initially Hidden) -->
                 <div id="settings-section" class="admin-section hidden">
+                    <div class="admin-input-group">
+                        <label>Tiêu đề trang web:</label>
+                        <input type="text" id="admin-app-title" placeholder="Nhập tiêu đề...">
+                    </div>
                     <div class="admin-input-group">
                         <label>Hướng dẫn bước 1:</label>
                         <input type="text" id="admin-step1" placeholder="Nhập bước 1...">
