@@ -314,12 +314,68 @@ input[type="text"]:focus {
     color: #999;
 }
 
+.admin-header-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.campaign-item {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #eee;
+}
+
+.campaign-info {
+    flex: 1;
+}
+
+.campaign-name {
+    font-weight: 700;
+    color: #333;
+}
+
+.campaign-slug {
+    font-size: 12px;
+    color: var(--shopee-orange);
+}
+
+.campaign-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.action-btn {
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    border: none;
+}
+
+.edit-item-btn { background: #e3f2fd; color: #1976d2; }
+.delete-item-btn { background: #ffebee; color: #d32f2f; }
+.copy-url-btn { background: #f1f8e9; color: #388e3c; }
+
+.loading-text {
+    text-align: center;
+    padding: 20px;
+    color: #999;
+    font-style: italic;
+}
+
 .modal-body { 
     padding: 20px; 
     display: flex; 
     flex-direction: column; 
     gap: 15px;
-    max-height: 70vh;
+    max-height: 80vh;
     overflow-y: auto;
 }
 

@@ -73,44 +73,194 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let isLoggedIn = false;
 
-    // --- KHỞI TẠO ---
-    let currentConfig = loadConfig();
-    applyConfig(currentConfig);
+    // --- TRẠNG THÁI ---
+    let currentConfig = { ...DEFAULTS };
+    let isLoggedIn = false;
+    let editingCampaignId = null; // null = tạo mới
 
-    // Tải cấu hình từ Supabase (nếu có)
-    async function initSupabase() {
+    const campaignListView = document.getElementById('campaign-list-view');
+    const campaignEditView = document.getElementById('campaign-edit-view');
+    const campaignItemsContainer = document.getElementById('campaign-items-container');
+    const createNewBtn = document.getElementById('create-new-campaign');
+    const backToListBtn = document.getElementById('back-to-list');
+    const editViewTitle = document.getElementById('edit-view-title');
+    const adminSlugInput = document.getElementById('admin-slug');
+    const urlPreview = document.getElementById('generated-url-preview');
+
+    // --- KHỞI TẠO ---
+    initApp();
+
+    async function initApp() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const campaignSlug = urlParams.get('p');
+
+        if (campaignSlug) {
+            await loadCampaignBySlug(campaignSlug);
+        } else {
+            // Load mặc định
+            applyConfig(DEFAULTS);
+            await loadCampaignBySlug('default');
+        }
+    }
+
+    async function loadCampaignBySlug(slug) {
         if (!supabase) return;
         try {
             const { data, error } = await supabase
                 .from('app_config')
                 .select('*')
-                .eq('id', 1)
+                .eq('slug', slug)
                 .single();
             
             if (data) {
-                // Chuyển đổi tên cột từ snake_case sang camelCase (nếu cần)
-                currentConfig = {
-                    affId: data.aff_id,
-                    bannerUrl: data.banner_url,
-                    bannerSize: data.banner_size,
-                    fbLink: data.fb_link,
-                    promoTitle: data.promo_title,
-                    promoSubtitle: data.promo_subtitle,
-                    promoBadge: data.promo_badge,
-                    promoStat: data.promo_stat,
-                    step1: data.step1 || DEFAULTS.step1,
-                    step2: data.step2 || DEFAULTS.step2,
-                    step3: data.step3 || DEFAULTS.step3,
-                    appTitle: data.app_title || DEFAULTS.appTitle,
-                    tabTitle: data.tab_title || DEFAULTS.tabTitle
-                };
+                currentConfig = mapDataToConfig(data);
                 applyConfig(currentConfig);
             }
         } catch (err) {
-            console.warn('Sử dụng cấu hình local:', err);
+            console.warn('Không tìm thấy campaign:', slug);
         }
     }
-    initSupabase();
+
+    function mapDataToConfig(data) {
+        return {
+            id: data.id,
+            slug: data.slug,
+            affId: data.aff_id,
+            bannerUrl: data.banner_url,
+            bannerSize: data.banner_size,
+            fbLink: data.fb_link,
+            promoTitle: data.promo_title,
+            promoSubtitle: data.promo_subtitle,
+            promoBadge: data.promo_badge,
+            promoStat: data.promo_stat,
+            step1: data.step1 || DEFAULTS.step1,
+            step2: data.step2 || DEFAULTS.step2,
+            step3: data.step3 || DEFAULTS.step3,
+            appTitle: data.app_title || DEFAULTS.appTitle,
+            tabTitle: data.tab_title || DEFAULTS.tabTitle
+        };
+    }
+
+    // --- LOGIC CHIẾN DỊCH ---
+
+    async function loadCampaignList() {
+        if (!supabase) return;
+        campaignItemsContainer.innerHTML = '<div class="loading-text">Đang tải danh sách...</div>';
+        
+        const { data, error } = await supabase
+            .from('app_config')
+            .select('id, slug, app_title')
+            .order('created_at', { ascending: false });
+
+        if (error) {
+            campaignItemsContainer.innerHTML = '<div class="loading-text" style="color: red;">Lỗi tải dữ liệu!</div>';
+            return;
+        }
+
+        if (data.length === 0) {
+            campaignItemsContainer.innerHTML = '<div class="loading-text">Chưa có link nào. Hãy tạo mới!</div>';
+            return;
+        }
+
+        campaignItemsContainer.innerHTML = '';
+        data.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'campaign-item';
+            const fullUrl = `${window.location.origin}${window.location.pathname}?p=${item.slug}`;
+            
+            div.innerHTML = `
+                <div class="campaign-info">
+                    <div class="campaign-name">${item.app_title || 'Không tên'}</div>
+                    <div class="campaign-slug">?p=${item.slug}</div>
+                </div>
+                <div class="campaign-actions">
+                    <button class="action-btn copy-url-btn" data-url="${fullUrl}">Copy Link</button>
+                    <button class="action-btn edit-item-btn" data-id="${item.id}">Sửa</button>
+                    <button class="action-btn delete-item-btn" data-id="${item.id}">Xóa</button>
+                </div>
+            `;
+            campaignItemsContainer.appendChild(div);
+        });
+
+        // Gán sự kiện cho các nút
+        divEvents();
+    }
+
+    function divEvents() {
+        document.querySelectorAll('.copy-url-btn').forEach(btn => {
+            btn.onclick = () => {
+                navigator.clipboard.writeText(btn.dataset.url);
+                showToast('Đã copy link chiến dịch!');
+            };
+        });
+
+        document.querySelectorAll('.edit-item-btn').forEach(btn => {
+            btn.onclick = async () => {
+                const id = btn.dataset.id;
+                const { data } = await supabase.from('app_config').select('*').eq('id', id).single();
+                if (data) {
+                    editingCampaignId = id;
+                    const config = mapDataToConfig(data);
+                    fillEditForm(config);
+                    showEditView(true);
+                }
+            };
+        });
+
+        document.querySelectorAll('.delete-item-btn').forEach(btn => {
+            btn.onclick = async () => {
+                if (confirm('Bạn có chắc muốn xóa link này?')) {
+                    await supabase.from('app_config').delete().eq('id', btn.dataset.id);
+                    loadCampaignList();
+                    showToast('Đã xóa thành công!');
+                }
+            };
+        });
+    }
+
+    function fillEditForm(config) {
+        adminSlugInput.value = config.slug || '';
+        adminAppTitleInput.value = config.appTitle || '';
+        adminTabTitleInput.value = config.tabTitle || '';
+        adminAffIdInput.value = config.affId || '';
+        adminFbLinkInput.value = config.fbLink || '';
+        adminBannerUrlInput.value = config.bannerUrl || '';
+        adminBannerSizeInput.value = config.bannerSize || '60';
+        adminPromoTitleInput.value = config.promoTitle || '';
+        adminPromoSubtitleInput.value = config.promoSubtitle || '';
+        adminPromoBadgeInput.value = config.promoBadge || '';
+        adminPromoStatInput.value = config.promoStat || '';
+        adminStep1Input.value = config.step1 || '';
+        adminStep2Input.value = config.step2 || '';
+        adminStep3Input.value = config.step3 || '';
+        
+        document.getElementById('admin-banner-preview-img').src = config.bannerUrl || 'promo_banner.png';
+        updateUrlPreview();
+    }
+
+    function showEditView(isEdit) {
+        campaignListView.classList.add('hidden');
+        campaignEditView.classList.remove('hidden');
+        editViewTitle.textContent = isEdit ? 'Chỉnh sửa Link' : 'Tạo Link Mới';
+        if (!isEdit) {
+            editingCampaignId = null;
+            fillEditForm({ ...DEFAULTS, slug: '' });
+        }
+    }
+
+    createNewBtn.onclick = () => showEditView(false);
+    backToListBtn.onclick = () => {
+        campaignListView.classList.remove('hidden');
+        campaignEditView.classList.add('hidden');
+        loadCampaignList();
+    };
+
+    adminSlugInput.oninput = updateUrlPreview;
+    function updateUrlPreview() {
+        const slug = adminSlugInput.value.trim().toLowerCase().replace(/\s+/g, '-');
+        adminSlugInput.value = slug;
+        urlPreview.textContent = slug ? `${window.location.origin}${window.location.pathname}?p=${slug}` : '';
+    }
 
     // --- LOGIC CHÍNH ---
 
@@ -141,29 +291,17 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Link không hợp lệ!');
         }
     });
-
-    // Sao chép link kết quả
-    copyBtn.addEventListener('click', () => {
-        outputUrl.select();
-        document.execCommand('copy');
-        showToast('Đã sao chép link thành công!');
-    });
-
     // --- LOGIC ADMIN PANEL ---
 
     // Mở Admin Modal
     adminToggle.addEventListener('click', () => {
-        // Reset về màn hình login nếu chưa đăng nhập
         if (!isLoggedIn) {
             loginSection.classList.remove('hidden');
             settingsSection.classList.add('hidden');
             modalTitle.textContent = 'Đăng Nhập Quản Trị';
-            loginUser.value = '';
-            loginPass.value = '';
         } else {
             showSettings();
         }
-        
         adminModal.classList.remove('hidden');
     });
 
@@ -181,22 +319,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function showSettings() {
         loginSection.classList.add('hidden');
         settingsSection.classList.remove('hidden');
-        modalTitle.textContent = 'Bảng Quản Trị (Admin Panel)';
-
-        // Điền lại giá trị hiện tại vào form
-        adminAffIdInput.value = currentConfig.affId;
-        adminBannerUrlInput.value = currentConfig.bannerUrl;
-        adminBannerSizeInput.value = currentConfig.bannerSize || '60';
-        adminFbLinkInput.value = currentConfig.fbLink;
-        adminPromoTitleInput.value = currentConfig.promoTitle;
-        adminPromoSubtitleInput.value = currentConfig.promoSubtitle;
-        adminPromoBadgeInput.value = currentConfig.promoBadge;
-        adminPromoStatInput.value = currentConfig.promoStat;
-        adminStep1Input.value = currentConfig.step1;
-        adminStep2Input.value = currentConfig.step2;
-        adminStep3Input.value = currentConfig.step3;
-        adminAppTitleInput.value = currentConfig.appTitle;
-        adminTabTitleInput.value = currentConfig.tabTitle;
+        modalTitle.textContent = 'Quản Lý Link (Campaigns)';
+        loadCampaignList();
     }
 
     // Xử lý upload file ảnh & Khởi tạo Cropper
@@ -205,16 +329,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (file) {
             const reader = new FileReader();
             reader.onload = (event) => {
-                // Hiển thị khung cắt ảnh
                 cropperImage.src = event.target.result;
                 cropperWrapper.classList.remove('hidden');
-                
                 if (cropper) cropper.destroy();
-                
-                // Khởi tạo Cropper sau khi ảnh load
                 setTimeout(() => {
                     cropper = new Cropper(cropperImage, {
-                        aspectRatio: 1, // Tỷ lệ 1:1 cho voucher
+                        aspectRatio: 1,
                         viewMode: 1,
                         autoCropArea: 1,
                     });
@@ -224,53 +344,52 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Nút xác nhận cắt ảnh
     cropBtn.addEventListener('click', (e) => {
         e.preventDefault();
         if (cropper) {
-            const canvas = cropper.getCroppedCanvas({
-                width: 300,
-                height: 300,
-            });
-            const base64 = canvas.toDataURL('image/png');
-            adminBannerUrlInput.value = base64; // Lưu kết quả cắt
+            const canvas = cropper.getCroppedCanvas({ width: 400, height: 400 });
+            const base64Image = canvas.toDataURL('image/png');
+            adminBannerUrlInput.value = base64Image;
+            document.getElementById('admin-banner-preview-img').src = base64Image;
             cropperWrapper.classList.add('hidden');
-            showToast('Đã cắt ảnh thành công!');
+            cropper.destroy();
+            cropper = null;
+            showToast('Đã cắt ảnh xong!');
         }
-    });
-
-    // Đóng Admin Modal
-    closeModal.addEventListener('click', () => {
-        adminModal.classList.add('hidden');
     });
 
     // Lưu cài đặt Admin
     saveSettingsBtn.addEventListener('click', async () => {
+        const slug = adminSlugInput.value.trim();
+        if (!slug) {
+            alert('Vui lòng nhập Đuôi link (Slug)!');
+            return;
+        }
+
         const newConfig = {
-            affId: adminAffIdInput.value.trim() || DEFAULTS.affId,
-            bannerUrl: adminBannerUrlInput.value.trim() || DEFAULTS.bannerUrl,
-            bannerSize: adminBannerSizeInput.value.trim() || DEFAULTS.bannerSize,
-            fbLink: adminFbLinkInput.value.trim() || DEFAULTS.fbLink,
-            promoTitle: adminPromoTitleInput.value.trim() || DEFAULTS.promoTitle,
-            promoSubtitle: adminPromoSubtitleInput.value.trim() || DEFAULTS.promoSubtitle,
-            promoBadge: adminPromoBadgeInput.value.trim() || DEFAULTS.promoBadge,
-            promoStat: adminPromoStatInput.value.trim() || DEFAULTS.promoStat,
-            step1: adminStep1Input.value.trim() || DEFAULTS.step1,
-            step2: adminStep2Input.value.trim() || DEFAULTS.step2,
-            step3: adminStep3Input.value.trim() || DEFAULTS.step3,
-            appTitle: adminAppTitleInput.value.trim() || DEFAULTS.appTitle,
-            tabTitle: adminTabTitleInput.value.trim() || DEFAULTS.tabTitle
+            slug: slug,
+            affId: adminAffIdInput.value.trim(),
+            bannerUrl: adminBannerUrlInput.value.trim(),
+            bannerSize: adminBannerSizeInput.value.trim(),
+            fbLink: adminFbLinkInput.value.trim(),
+            promoTitle: adminPromoTitleInput.value.trim(),
+            promoSubtitle: adminPromoSubtitleInput.value.trim(),
+            promoBadge: adminPromoBadgeInput.value.trim(),
+            promoStat: adminPromoStatInput.value.trim(),
+            step1: adminStep1Input.value.trim(),
+            step2: adminStep2Input.value.trim(),
+            step3: adminStep3Input.value.trim(),
+            appTitle: adminAppTitleInput.value.trim(),
+            tabTitle: adminTabTitleInput.value.trim()
         };
 
-        // 1. Lưu vào LocalStorage (dự phòng)
-        saveConfig(newConfig);
-        
-        // 2. Lưu lên Supabase
         if (supabase) {
-            showToast('Đang đồng bộ với Cloud...');
-            const { error } = await supabase
-                .from('app_config')
-                .update({
+            showToast('Đang lưu...');
+            let result;
+            if (editingCampaignId) {
+                // Update
+                result = await supabase.from('app_config').update({
+                    slug: newConfig.slug,
                     aff_id: newConfig.affId,
                     banner_url: newConfig.bannerUrl,
                     banner_size: newConfig.bannerSize,
@@ -284,20 +403,44 @@ document.addEventListener('DOMContentLoaded', () => {
                     step3: newConfig.step3,
                     app_title: newConfig.appTitle,
                     tab_title: newConfig.tabTitle
-                })
-                .eq('id', 1);
+                }).eq('id', editingCampaignId);
+            } else {
+                // Insert
+                result = await supabase.from('app_config').insert([{
+                    slug: newConfig.slug,
+                    aff_id: newConfig.affId,
+                    banner_url: newConfig.bannerUrl,
+                    banner_size: newConfig.bannerSize,
+                    fb_link: newConfig.fbLink,
+                    promo_title: newConfig.promoTitle,
+                    promo_subtitle: newConfig.promoSubtitle,
+                    promo_badge: newConfig.promoBadge,
+                    promo_stat: newConfig.promoStat,
+                    step1: newConfig.step1,
+                    step2: newConfig.step2,
+                    step3: newConfig.step3,
+                    app_title: newConfig.appTitle,
+                    tab_title: newConfig.tabTitle
+                }]);
+            }
 
-            if (error) {
-                console.error('Lỗi Supabase:', error);
-                alert('Không thể lưu lên Cloud, vui lòng kiểm tra bảng app_config!');
+            if (result.error) {
+                alert('Lỗi: ' + result.error.message);
+            } else {
+                showToast('Đã lưu thành công!');
+                backToListBtn.click();
+                // Nếu đang ở chính trang này thì apply luôn
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.get('p') === slug) {
+                    applyConfig(newConfig);
+                }
             }
         }
+    });
 
-        currentConfig = newConfig;
-        applyConfig(newConfig);
-        
+    // Đóng Admin Modal
+    closeModal.addEventListener('click', () => {
         adminModal.classList.add('hidden');
-        showToast('Đã cập nhật cấu hình cho toàn hệ thống!');
     });
 
     // Đóng modal khi click ra ngoài
