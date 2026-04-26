@@ -460,16 +460,30 @@ input[type="text"]:focus {
 }
 
 .action-btn {
-    position: relative !important;
-    right: 0 !important;
-    background: var(--shopee-orange) !important;
-    color: white !important;
-    padding: 8px 16px !important;
-    border-radius: 4px !important;
-    font-size: 13px !important;
-    font-weight: 700 !important;
-    margin: 5px auto !important;
-    display: inline-block !important;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: opacity 0.2s;
+}
+
+.action-btn:hover {
+    opacity: 0.8;
+}
+
+.edit-item-btn { 
+    background: #e3f2fd; 
+    color: #1976d2; 
+}
+.delete-item-btn { 
+    background: #ffebee; 
+    color: #d32f2f; 
+}
+.copy-url-btn { 
+    background: #f1f8e9; 
+    color: #388e3c; 
 }
 
 .save-btn {

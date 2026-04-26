@@ -181,40 +181,45 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Gán sự kiện cho các nút
-        divEvents();
+        // Các sự kiện đã được xử lý qua Event Delegation ở ngoài
     }
 
-    function divEvents() {
-        document.querySelectorAll('.copy-url-btn').forEach(btn => {
-            btn.onclick = () => {
-                navigator.clipboard.writeText(btn.dataset.url);
-                showToast('Đã copy link chiến dịch!');
-            };
-        });
+    // Sử dụng Event Delegation để xử lý các nút bấm trong danh sách
+    campaignItemsContainer.onclick = async (e) => {
+        const btn = e.target.closest('.action-btn');
+        if (!btn) return;
 
-        document.querySelectorAll('.edit-item-btn').forEach(btn => {
-            btn.onclick = async () => {
-                const id = btn.dataset.id;
-                const { data } = await supabase.from('app_config').select('*').eq('id', id).single();
-                if (data) {
-                    editingCampaignId = id;
-                    const config = mapDataToConfig(data);
-                    fillEditForm(config);
-                    showEditView(true);
-                }
-            };
-        });
+        const id = btn.dataset.id;
+        const url = btn.dataset.url;
 
-        document.querySelectorAll('.delete-item-btn').forEach(btn => {
-            btn.onclick = async () => {
-                if (confirm('Bạn có chắc muốn xóa link này?')) {
-                    await supabase.from('app_config').delete().eq('id', btn.dataset.id);
+        if (btn.classList.contains('copy-url-btn')) {
+            navigator.clipboard.writeText(url);
+            showToast('Đã copy link chiến dịch!');
+        } 
+        else if (btn.classList.contains('edit-item-btn')) {
+            showToast('Đang tải dữ liệu...');
+            const { data, error } = await supabase.from('app_config').select('*').eq('id', id).single();
+            if (data) {
+                editingCampaignId = id;
+                const config = mapDataToConfig(data);
+                fillEditForm(config);
+                showEditView(true);
+            } else {
+                alert('Không tìm thấy dữ liệu chiến dịch!');
+            }
+        } 
+        else if (btn.classList.contains('delete-item-btn')) {
+            if (confirm('Bạn có chắc muốn xóa link này?')) {
+                const { error } = await supabase.from('app_config').delete().eq('id', id);
+                if (error) {
+                    alert('Lỗi khi xóa: ' + error.message);
+                } else {
                     loadCampaignList();
                     showToast('Đã xóa thành công!');
                 }
-            };
-        });
-    }
+            }
+        }
+    };
 
     function fillEditForm(config) {
         adminSlugInput.value = config.slug || '';
