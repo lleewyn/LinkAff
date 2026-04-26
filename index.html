@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tạo Link Shopee - ghiensansale.shopee.cc</title>
+    <title id="app-tab-title">Tạo Link Shopee - Affiliate Tool</title>
+    <link rel="icon" type="image/x-icon" href="https://shopee.vn/favicon.ico">
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
-    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div class="main-wrapper">
         <header class="page-header">
@@ -27,7 +29,7 @@
                     <i class="fa-solid fa-lock"></i>
                     <span>Link sản phẩm Shopee</span>
                 </div>
-                
+
                 <div class="input-container">
                     <input type="text" id="product-url" placeholder="Dán link Shopee vào đây...">
                     <button id="paste-btn" class="inner-icon-btn">
@@ -77,7 +79,8 @@
                             <div class="promo-title" id="promo-title">Giảm 25% Giảm tối đa 1trđ</div>
                             <div class="promo-subtitle" id="promo-subtitle">Đơn Tối Thiểu 50kđ</div>
                             <div class="promo-badge" id="promo-badge">Độc Quyền Facebook</div>
-                            <div class="promo-stat" id="promo-stat">Đã dùng 98%, Sắp hết hạn: Còn ... <span class="terms">Điều Kiện</span></div>
+                            <div class="promo-stat" id="promo-stat">Đã dùng 98%, Sắp hết hạn: Còn ... <span
+                                    class="terms">Điều Kiện</span></div>
                         </div>
                         <button class="use-now-btn">Dùng Ngay</button>
                     </div>
@@ -125,6 +128,10 @@
                 <!-- Settings Section (Initially Hidden) -->
                 <div id="settings-section" class="admin-section hidden">
                     <div class="admin-input-group">
+                        <label>Tiêu đề Tab trình duyệt:</label>
+                        <input type="text" id="admin-tab-title" placeholder="Nhập tiêu đề tab...">
+                    </div>
+                    <div class="admin-input-group">
                         <label>Tiêu đề trang web:</label>
                         <input type="text" id="admin-app-title" placeholder="Nhập tiêu đề...">
                     </div>
@@ -161,7 +168,7 @@
                             <input type="file" id="admin-banner-file" accept="image/*">
                         </div>
                         <input type="hidden" id="admin-banner-url">
-                        
+
                         <!-- Cropper Area -->
                         <div id="cropper-wrapper" class="hidden">
                             <div class="cropper-container">
@@ -202,4 +209,5 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
     <script src="script.js"></script>
 </body>
+
 </html>

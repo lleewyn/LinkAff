@@ -12,7 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
         step1: 'Sau khi tạo link, nhấn Copy Link.',
         step2: 'Dán link dưới bình luận bài đăng này.',
         step3: 'Click vào link để mở Shopee sẽ nhận được mã.',
-        appTitle: 'Tạo Link Shopee'
+        appTitle: 'Tạo Link Shopee',
+        tabTitle: 'Tạo Link Shopee - Affiliate Tool'
     };
 
     // --- CẤU HÌNH SUPABASE ---
@@ -56,6 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const adminStep2Input = document.getElementById('admin-step2');
     const adminStep3Input = document.getElementById('admin-step3');
     const adminAppTitleInput = document.getElementById('admin-app-title');
+    const adminTabTitleInput = document.getElementById('admin-tab-title');
 
     const loginSection = document.getElementById('login-section');
     const settingsSection = document.getElementById('settings-section');
@@ -99,7 +101,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     step1: data.step1 || DEFAULTS.step1,
                     step2: data.step2 || DEFAULTS.step2,
                     step3: data.step3 || DEFAULTS.step3,
-                    appTitle: data.app_title || DEFAULTS.appTitle
+                    appTitle: data.app_title || DEFAULTS.appTitle,
+                    tabTitle: data.tab_title || DEFAULTS.tabTitle
                 };
                 applyConfig(currentConfig);
             }
@@ -193,6 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
         adminStep2Input.value = currentConfig.step2;
         adminStep3Input.value = currentConfig.step3;
         adminAppTitleInput.value = currentConfig.appTitle;
+        adminTabTitleInput.value = currentConfig.tabTitle;
     }
 
     // Xử lý upload file ảnh & Khởi tạo Cropper
@@ -254,7 +258,8 @@ document.addEventListener('DOMContentLoaded', () => {
             step1: adminStep1Input.value.trim() || DEFAULTS.step1,
             step2: adminStep2Input.value.trim() || DEFAULTS.step2,
             step3: adminStep3Input.value.trim() || DEFAULTS.step3,
-            appTitle: adminAppTitleInput.value.trim() || DEFAULTS.appTitle
+            appTitle: adminAppTitleInput.value.trim() || DEFAULTS.appTitle,
+            tabTitle: adminTabTitleInput.value.trim() || DEFAULTS.tabTitle
         };
 
         // 1. Lưu vào LocalStorage (dự phòng)
@@ -277,7 +282,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     step1: newConfig.step1,
                     step2: newConfig.step2,
                     step3: newConfig.step3,
-                    app_title: newConfig.appTitle
+                    app_title: newConfig.appTitle,
+                    tab_title: newConfig.tabTitle
                 })
                 .eq('id', 1);
 
