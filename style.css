@@ -314,6 +314,15 @@ input[type="text"]:focus {
     color: #999;
 }
 
+.modal-body { 
+    padding: 20px; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 15px;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
 .admin-group-title {
     font-size: 14px;
     font-weight: 700;
