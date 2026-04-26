@@ -237,7 +237,8 @@ document.addEventListener('DOMContentLoaded', () => {
         adminStep2Input.value = config.step2 || '';
         adminStep3Input.value = config.step3 || '';
         
-        document.getElementById('admin-banner-preview-img').src = config.bannerUrl || 'promo_banner.png';
+        const previewImg = document.getElementById('admin-banner-preview-img');
+        if (previewImg) previewImg.src = config.bannerUrl || 'promo_banner.png';
         updateUrlPreview();
     }
 
