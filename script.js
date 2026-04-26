@@ -328,6 +328,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // 1. Cập nhật Tiêu đề Tab trình duyệt
         if (config.tabTitle) {
             document.title = config.tabTitle;
+            // Cập nhật thêm thẻ title nếu có ID để chắc chắn
+            const tabTitleEl = document.getElementById('app-tab-title');
+            if (tabTitleEl) tabTitleEl.textContent = config.tabTitle;
+            console.log('Đã đổi tiêu đề tab thành:', config.tabTitle);
         }
 
         // 2. Cập nhật Tiêu đề chính trên trang
