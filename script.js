@@ -325,10 +325,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function applyConfig(config) {
-        // Cập nhật ảnh banner
+        // 1. Cập nhật Tiêu đề Tab trình duyệt
+        if (config.tabTitle) {
+            document.title = config.tabTitle;
+        }
+
+        // 2. Cập nhật Tiêu đề chính trên trang
+        const appTitleEl = document.getElementById('display-app-title');
+        if (appTitleEl && config.appTitle) {
+            appTitleEl.textContent = config.appTitle;
+        }
+
+        // 3. Cập nhật ảnh banner
         if (promoImg) {
-            promoImg.src = config.bannerUrl;
-            // Cập nhật kích thước
+            promoImg.src = config.bannerUrl || 'promo_banner.png';
             const wrapper = document.querySelector('.promo-image-wrapper');
             if (wrapper) {
                 const size = config.bannerSize || '60';
@@ -336,10 +346,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 wrapper.style.height = size + 'px';
             }
         }
-        // Cập nhật link FB
-        if (fbPostLink) fbPostLink.href = config.fbLink;
+
+        // 4. Cập nhật link FB
+        if (fbPostLink) fbPostLink.href = config.fbLink || '#';
         
-        // Cập nhật thông tin voucher
+        // 5. Cập nhật thông tin voucher
         const titleEl = document.getElementById('promo-title');
         const subtitleEl = document.getElementById('promo-subtitle');
         const badgeEl = document.getElementById('promo-badge');
@@ -349,11 +360,19 @@ document.addEventListener('DOMContentLoaded', () => {
         if (subtitleEl) subtitleEl.textContent = config.promoSubtitle;
         if (badgeEl) badgeEl.textContent = config.promoBadge;
         if (statEl) {
-            // Giữ lại phần "Điều Kiện" nếu có
             const termsSpan = statEl.querySelector('.terms');
-            statEl.textContent = config.promoStat + ' ';
+            statEl.textContent = (config.promoStat || '') + ' ';
             if (termsSpan) statEl.appendChild(termsSpan);
         }
+
+        // 6. Cập nhật 3 bước hướng dẫn
+        const step1El = document.getElementById('display-step1');
+        const step2El = document.getElementById('display-step2');
+        const step3El = document.getElementById('display-step3');
+
+        if (step1El) step1El.innerHTML = config.step1 || DEFAULTS.step1;
+        if (step2El) step2El.innerHTML = config.step2 || DEFAULTS.step2;
+        if (step3El) step3El.innerHTML = config.step3 || DEFAULTS.step3;
     }
 
     function showToast(message) {
