@@ -71,8 +71,6 @@ document.addEventListener('DOMContentLoaded', () => {
         pass: 'mkquynh123bijkhung'
     };
 
-    let isLoggedIn = false;
-
     // --- TRẠNG THÁI ---
     let currentConfig = { ...DEFAULTS };
     let isLoggedIn = false;
