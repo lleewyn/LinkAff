@@ -295,6 +295,14 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Link không hợp lệ!');
         }
     });
+    // Sao chép link kết quả
+    copyBtn.addEventListener('click', () => {
+        outputUrl.select();
+        navigator.clipboard.writeText(outputUrl.value).then(() => {
+            showToast('Đã sao chép link thành công!');
+        });
+    });
+
     // --- LOGIC ADMIN PANEL ---
 
     // Mở Admin Modal
