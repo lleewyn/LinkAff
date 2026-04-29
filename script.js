@@ -466,6 +466,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function transformLink(url, id) {
         let cleanUrl = url.split('?')[0];
+        
+        // Rút gọn link Shopee: loại bỏ tên sản phẩm dài dòng để link ngắn gọn hơn
+        // Tìm định dạng: -i.ShopID.ItemID
+        const matchI = cleanUrl.match(/-i\.(\d+)\.(\d+)/);
+        // Tìm định dạng: /product/ShopID/ItemID
+        const matchProduct = cleanUrl.match(/product\/(\d+)\/(\d+)/);
+        
+        if (matchI) {
+            cleanUrl = `https://shopee.vn/product/${matchI[1]}/${matchI[2]}`;
+        } else if (matchProduct) {
+            cleanUrl = `https://shopee.vn/product/${matchProduct[1]}/${matchProduct[2]}`;
+        }
+
         const encodedUrl = encodeURIComponent(cleanUrl);
         return `https://s.shopee.vn/an_redir?origin_link=${encodedUrl}&affiliate_id=${id}`;
     }
