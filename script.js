@@ -286,6 +286,12 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        // Cảnh báo nếu dùng link rút gọn
+        if (rawUrl.includes('shope.ee') || rawUrl.includes('shp.ee')) {
+            const confirmProceed = confirm('Bạn đang dùng link rút gọn (shp.ee). Link này có thể không hoạt động ổn định hoặc bị mất hoa hồng. Bạn nên dùng link dài (shopee.vn/product/...) để đạt hiệu quả tốt nhất. Bạn vẫn muốn tiếp tục?');
+            if (!confirmProceed) return;
+        }
+
         try {
             const convertedUrl = transformLink(rawUrl, currentConfig.affId);
             outputUrl.value = convertedUrl;
@@ -465,22 +471,42 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- HÀM HỖ TRỢ ---
 
     function transformLink(url, id) {
-        let cleanUrl = url.split('?')[0];
-        
-        // Rút gọn link Shopee: loại bỏ tên sản phẩm dài dòng để link ngắn gọn hơn
-        // Tìm định dạng: -i.ShopID.ItemID
-        const matchI = cleanUrl.match(/-i\.(\d+)\.(\d+)/);
-        // Tìm định dạng: /product/ShopID/ItemID
-        const matchProduct = cleanUrl.match(/product\/(\d+)\/(\d+)/);
-        
-        if (matchI) {
-            cleanUrl = `https://shopee.vn/product/${matchI[1]}/${matchI[2]}`;
-        } else if (matchProduct) {
-            cleanUrl = `https://shopee.vn/product/${matchProduct[1]}/${matchProduct[2]}`;
+        let cleanUrl = url;
+
+        // 1. Nếu là link rút gọn (shope.ee hoặc shp.ee), ta để nguyên link đó làm origin_link
+        // Nhưng tốt nhất vẫn khuyên người dùng dùng link dài.
+        if (url.includes('shope.ee') || url.includes('shp.ee')) {
+            cleanUrl = url.split('?')[0];
+        } else {
+            // 2. Xử lý link dài: Lọc bỏ các tham số affiliate của người khác nếu có
+            try {
+                const urlObj = new URL(url);
+                const params = new URLSearchParams(urlObj.search);
+                const blackList = ['aff_id', 'affiliate_id', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content'];
+                blackList.forEach(p => params.delete(p));
+                
+                urlObj.search = params.toString();
+                cleanUrl = urlObj.toString().split('?')[0]; // Lấy base URL trước
+                
+                // Nếu có tham số quan trọng như v (video) hoặc smtt, có thể giữ lại ở đây nếu cần
+            } catch (e) {
+                cleanUrl = url.split('?')[0];
+            }
+
+            // 3. Regex cải tiến: hỗ trợ cả -i. (cũ) và .i. (mới)
+            const matchI = url.match(/[.-]i\.(\d+)\.(\d+)/);
+            const matchProduct = url.match(/product\/(\d+)\/(\d+)/);
+            
+            if (matchI) {
+                cleanUrl = `https://shopee.vn/product/${matchI[1]}/${matchI[2]}`;
+            } else if (matchProduct) {
+                cleanUrl = `https://shopee.vn/product/${matchProduct[1]}/${matchProduct[2]}`;
+            }
         }
 
         const encodedUrl = encodeURIComponent(cleanUrl);
-        return `https://s.shopee.vn/an_redir?origin_link=${encodedUrl}&affiliate_id=${id}`;
+        // Thêm sub_id=tool_linkaff để bạn dễ theo dõi trong Dashboard Shopee
+        return `https://s.shopee.vn/an_redir?origin_link=${encodedUrl}&affiliate_id=${id}&sub_id=tool_linkaff`;
     }
 
     function loadConfig() {
