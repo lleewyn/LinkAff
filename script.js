@@ -278,27 +278,41 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Logic chuyển đổi sang link Affiliate
+    // Logic chuyển đổi sang link Affiliate (Hỗ trợ hàng loạt)
     convertBtn.addEventListener('click', () => {
-        const rawUrl = productUrlInput.value.trim();
-        if (!rawUrl) {
+        const rawContent = productUrlInput.value.trim();
+        if (!rawContent) {
             alert('Vui lòng dán link Shopee vào đây...');
             return;
         }
 
-        // Cảnh báo nếu dùng link rút gọn
-        if (rawUrl.includes('shope.ee') || rawUrl.includes('shp.ee')) {
-            const confirmProceed = confirm('Bạn đang dùng link rút gọn (shp.ee). Link này có thể không hoạt động ổn định hoặc bị mất hoa hồng. Bạn nên dùng link dài (shopee.vn/product/...) để đạt hiệu quả tốt nhất. Bạn vẫn muốn tiếp tục?');
+        // Tách các link theo dòng
+        const lines = rawContent.split('\n').map(l => l.trim()).filter(l => l !== '');
+        
+        // Kiểm tra xem có link rút gọn nào không
+        const hasShortLink = lines.some(l => l.includes('shope.ee') || l.includes('shp.ee'));
+        if (hasShortLink) {
+            const confirmProceed = confirm('Trong danh sách có chứa link rút gọn (shp.ee). Link này có thể không ổn định. Bạn nên dùng link dài để đạt hiệu quả tốt nhất. Vẫn tiếp tục?');
             if (!confirmProceed) return;
         }
 
         try {
-            const convertedUrl = transformLink(rawUrl, currentConfig.affId);
-            outputUrl.value = convertedUrl;
+            const results = lines.map(line => {
+                try {
+                    return transformLink(line, currentConfig.affId);
+                } catch (e) {
+                    return `Lỗi link: ${line}`;
+                }
+            });
+
+            outputUrl.value = results.join('\n');
+            // Tự động điều chỉnh độ cao textarea kết quả
+            outputUrl.rows = Math.min(Math.max(results.length, 4), 15);
+            
             resultArea.classList.remove('hidden');
             resultArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         } catch (error) {
-            alert('Link không hợp lệ!');
+            alert('Có lỗi xảy ra khi xử lý danh sách link!');
         }
     });
     // Sao chép link kết quả

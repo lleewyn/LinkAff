@@ -31,23 +31,23 @@
                 </div>
 
                 <div class="input-container">
-                    <input type="text" id="product-url" placeholder="Dán link Shopee vào đây...">
-                    <button id="paste-btn" class="inner-icon-btn">
+                    <textarea id="product-url" rows="3" placeholder="Dán các link Shopee vào đây (mỗi link một dòng)..."></textarea>
+                    <button id="paste-btn" class="inner-icon-btn" style="top: 12px; transform: none;">
                         <i class="fa-regular fa-copy"></i>
                     </button>
                 </div>
 
                 <button id="convert-btn" class="submit-btn">
-                    <i class="fa-solid fa-pencil"></i>
-                    Tạo Link Ngay
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    Tạo Link Hàng Loạt
                 </button>
 
-                <!-- Hidden Result Area (Matches Sample behavior if needed) -->
+                <!-- Hidden Result Area -->
                 <div id="result-area" class="result-area hidden">
-                    <div class="card-title">Link Affiliate của bạn:</div>
+                    <div class="card-title">Kết quả Link Affiliate của bạn:</div>
                     <div class="input-container">
-                        <input type="text" id="output-url" readonly>
-                        <button id="copy-btn" class="inner-icon-btn">
+                        <textarea id="output-url" rows="4" readonly placeholder="Kết quả sẽ hiện ở đây..."></textarea>
+                        <button id="copy-btn" class="inner-icon-btn" style="top: 12px; transform: none;">
                             <i class="fa-solid fa-copy"></i>
                         </button>
                     </div>
